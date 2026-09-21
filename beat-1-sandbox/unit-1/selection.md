@@ -15,22 +15,42 @@ wrong label is not graded.
 
 **Issue link**
 
-[The individual Path Review issue page. A link to the repository or the issue list
-does not satisfy this field.]
+https://github.com/codepath/pathreview-ai301-fa26-s3/issues/37
 
 **Verdict output**
 
-[Your skill's live-mode output for this issue, pasted verbatim and ending with the
-fenced JSON verdict block. A summary does not satisfy this field.]
-
-**The verdict must record `accept` for this issue.** Choose an issue your own skill
-accepts. If your skill rejects every candidate you try, that is a signal about your
-rubric rather than about the issues: revise it and re-run — retries are unlimited and a
-partial re-run costs about $0.20 — or run the skill on different candidates. Output
-recording `reject` for the issue you chose earns no credit for this field.
-
-```
-paste the output here, including the closing JSON block
+```json
+{
+  "item": "https://github.com/codepath/pathreview-ai301-fa26-s3/issues/37",
+  "checks": [
+    {
+      "name": "Maintainer Activity",
+      "grade": "pass",
+      "evidence": "Most recent commit by @Aburke225 dated September 16, 2026 — 5 days before today, within the 90-day threshold."
+    },
+    {
+      "name": "Repo Activity",
+      "grade": "pass",
+      "evidence": "Last push to main branch September 16, 2026; repo not archived; within 180-day threshold."
+    },
+    {
+      "name": "Scope Fits Beginner",
+      "grade": "pass",
+      "evidence": "Bounded doc task: add request-body schemas (fields + examples) for POST /profiles and POST /reviews to docs/API.md; labeled 'good first issue' and 'tier-1'; no comments or abandoned PRs."
+    },
+    {
+      "name": "Unclaimed",
+      "grade": "pass",
+      "evidence": "Assignees: none; linked PRs: none; zero comments — no claim activity of any kind."
+    },
+    {
+      "name": "Contribution Policy",
+      "grade": "pass",
+      "evidence": "No CONTRIBUTING.md, AI_POLICY.md, or AI_USAGE_POLICY.md found in the repo; silence passes per rubric."
+    }
+  ],
+  "verdict": "accept"
+}
 ```
 
 ---
@@ -41,27 +61,27 @@ Quote source text directly in each field below. Paraphrase does not satisfy them
 
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+1. Run 1: 17/20 agreement (failed on Scope Fits Beginner)
+2. Run 2: 15/20 agreement (failed category floor due to removed policies)
+3. Run 3: 19/20 agreement (passed)
+4. Run 4: 18/20 agreement (passed, saved to eval-run.txt)
 
 **Issue analysis**
 
-[One scored issue, identified by id (`issue-01` through `issue-20`; the `calib-`
-issues are not scored). State your rubric's decision, the gold label, and the
-reasoning that produced your rubric's result.]
+Issue: `issue-15` (zulip/zulip#19589)
+Gold label: `reject`
+My rubric's decision: `reject`
+Reasoning: The issue is a feature request for a Slack-compatible outgoing webhook that was opened in 2021. Despite having a "good first issue" label, it has 97 comments, multiple failed claim attempts, and two closed/unmerged PRs in its history. Our rubric correctly rejects this issue because it has a history of several abandoned PRs, meaning its scope and difficulty are likely far beyond a beginner, despite the friendly label.
 
 **Check rationale**
 
-[One check from the `rubric.md` uploaded to `tools/issue-select/`, quoted as it is
-currently written, with the reasoning behind its current form.]
+Check: `| Scope Fits Beginner | Issue body and comment thread | The work asks for a specific fix or feature (not a vague tracking issue or pure support question). Feature requests must be approved/settled by a maintainer or labeled 'good first issue'. It must not have a history of several/multiple abandoned PRs. | required |`
+
+Reasoning: This check ensures that the newcomer takes on a bounded task. Tracking/umbrella issues are too large to tackle in a single PR. Feature requests must be settled by a maintainer; otherwise, a beginner might write code for a design that will be rejected. Crucially, the "history of abandoned PRs" condition prevents beginners from walking into a trap issue that looks easy but has hidden complexities that caused previous contributors to give up.
 
 **Trade-offs**
 
-[What the quoted check gives up. Any one of these is a complete answer: an issue whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+This check occasionally rejects issues that are technically valid if the maintainer has not explicitly approved the feature request in the comments, even if the feature makes sense. For instance, we initially rejected `issue-01` (Add permanent docs) because it looked like a vague tracking issue due to the many sub-pages it referenced, even though the gold label was accept. However, this trade-off is worth it to protect beginners from taking on unapproved or unbounded scope.
 
 ---
 
@@ -73,12 +93,9 @@ This is also the basis for the claim comment you write in Unit 2.
 
 **Selection rationale**
 
-[Answer all three:
-
-1. The issue's fit to your interests and to the time available.
-2. What the verdict identified correctly, and what you weighed that the rubric could
-   not.
-3. The anticipated difficulty in claiming it.]
+1. **Fit**: Issue #37 involves reading Python files (`api/routes/profiles.py` and `api/schemas/review.py`) to extract schemas for documentation. Since my background is heavily Python-based, this directly aligns with my skills and provides a meaningful artifact without being overwhelmingly complex (estimated 2-3 hours).
+2. **Weighing factors**: The tool correctly identified that the scope is beginner-friendly and that there is recent maintainer activity. What I had to weigh myself was the learning value: while issue #73 is faster, #37 teaches me more about how the project's data models are structured.
+3. **Difficulty in claiming**: Anticipated difficulty is very low. The issue is entirely unclaimed, has no assignee, and the repo has no strict contribution policy against AI assistance.
 
 ---
 
