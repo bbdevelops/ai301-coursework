@@ -30,15 +30,48 @@ I'd like to work on this. I plan to add the missing request-body schemas for POS
 
 [https://github.com/codepath/pathreview-ai301-fa26-s3/issues/37#issuecomment-5864475853]
 
-**Environment**: OS: Windows 11, Code state: Forked repo at `codepath/pathreview-ai301-fa26-s3` (commit `main`)
+**Environment**: OS: Windows 11. Code state: my fork `bbdevelops/pathreview-ai301-fa26-s3` (forked from `codepath/pathreview-ai301-fa26-s3`), pinned at commit `2f4e82f52efbcfcc57d65b3fa5348672163ca088`. Python `>=3.11` per `pyproject.toml` (the tool version this doc issue concerns).
 
 **Steps to reproduce**:
-1. Open `docs/API.md` and observe the descriptions for `POST /profiles` and `POST /reviews`. They list endpoints but do not contain request body documentation.
-2. Open `api/routes/profiles.py` and observe `POST /profiles` expects `github_username`, `portfolio_url` and `resume_file` as Form data (multipart).
-3. Open `api/schemas/review.py` and observe `POST /reviews` expects a JSON body defined by `ReviewCreate` (which requires `profile_id: UUID`).
+```
+git clone https://github.com/bbdevelops/pathreview-ai301-fa26-s3.git
+cd pathreview-ai301-fa26-s3
+git checkout 2f4e82f52efbcfcc57d65b3fa5348672163ca088
+grep -n -A3 -E "POST /profiles|POST /reviews" docs/API.md
+sed -n '23,30p' api/routes/profiles.py
+cat api/schemas/review.py
+```
 
-**Expected behavior**: The `docs/API.md` file should include the required form data and JSON body schemas.
-**Actual behavior**: `docs/API.md` is missing the request body definitions, making the API reference incomplete for these endpoints as reported in the issue.
+**Observed output**:
+```
+$ grep -n -A3 -E "POST /profiles|POST /reviews" docs/API.md
+18:`POST /profiles` — Create a profile with resume and GitHub username.
+19-`GET /profiles/{profile_id}` — Retrieve a profile.
+20-`DELETE /profiles/{profile_id}` — Delete a profile and associated data.
+21-
+--
+24:`POST /reviews` — Request a new portfolio review for a profile.
+25-`GET /reviews/{review_id}` — Retrieve a completed review.
+26-`GET /reviews` — List reviews for the authenticated user (paginated).
+27-
+
+$ sed -n '23,30p' api/routes/profiles.py
+@router.post("", response_model=ProfileResponse)
+async def create_profile_endpoint(
+    github_username: str = Form(default=None),
+    portfolio_url: str = Form(default=None),
+    resume_file: UploadFile = File(default=None),
+    current_user: User = Depends(get_current_user),
+    db=Depends(get_db),
+):
+
+$ cat api/schemas/review.py
+class ReviewCreate(BaseModel):
+    profile_id: UUID
+```
+
+**Expected behavior**: `docs/API.md` should document each endpoint's request body: `POST /profiles` as multipart form data (`github_username`, `portfolio_url`, `resume_file`), and `POST /reviews` as a JSON body matching `ReviewCreate` (`profile_id: UUID`).
+**Actual behavior**: The `grep` output above shows `docs/API.md` lists both endpoints with a one-line description and no body schema — confirmed by diffing that against the real handler signature (`profiles.py`) and schema class (`review.py`) pasted above, which is the same gap the issue reports.
 
 ## Eval iterations
 
@@ -47,7 +80,8 @@ fields.
 
 **Run history**
 
-- Run 1: agreement: 20/20 scored items (bar: 18/20: PASS)
+- Run 1 (2026-09-28T05:17:08Z, graded from a project-local `.claude/skills/repro-check` copy): agreement 20/20 scored items (bar: 18/20: PASS).
+- Run 2 (2026-09-28T15:33:10Z, re-run with identical `rubric.md`/`evidence-guide.md` content after relocating the skill to the canonical `~/.claude/skills/repro-check/` install so `--rubric`/`--evidence` point at the same files live mode uses): agreement 19/20 scored items — pkg-09 disagreed (gold `accept`, verdict `reject`, failed `behavior-matches-issue`) — (bar: 18/20: PASS). This is the committed run in `eval-run.txt`.
 
 **Package analysis**
 
