@@ -15,8 +15,7 @@ label is not graded.
 
 **GitHub username**
 
-[Your GitHub username, exactly as it appears on your profile — no `@`, no profile URL. Your
-comments upstream are identified by this name.]
+bbdevelops
 
 ---
 
@@ -24,16 +23,22 @@ comments upstream are identified by this name.]
 
 **Claim comment**
 
-[Link to the comment where you claimed the issue. Use the comment's own permalink, not the
-issue page on its own. **Then paste the text of that comment underneath the link** — the
-pasted text is what this field is graded on, so copy across what you actually posted.]
+[https://github.com/codepath/pathreview-ai301-fa26-s3/issues/37#issuecomment-5864209517]
+I'd like to work on this. I plan to add the missing request-body schemas for POST /profiles and POST /reviews to docs/API.md by reading the route handlers in api/routes/profiles.py and the schema definitions in api/schemas/review.py.
 
 **Reproduction comment**
 
-[Link to the comment where you posted your reproduction. It must record the environment
-(OS, relevant versions, code state), steps a stranger could follow, and what you observed.
-**Then paste the text of that comment underneath the link** — the pasted text is what this
-field is graded on, so copy across what you actually posted.]
+[https://github.com/codepath/pathreview-ai301-fa26-s3/issues/37#issuecomment-5864475853]
+
+**Environment**: OS: Windows 11, Code state: Forked repo at `codepath/pathreview-ai301-fa26-s3` (commit `main`)
+
+**Steps to reproduce**:
+1. Open `docs/API.md` and observe the descriptions for `POST /profiles` and `POST /reviews`. They list endpoints but do not contain request body documentation.
+2. Open `api/routes/profiles.py` and observe `POST /profiles` expects `github_username`, `portfolio_url` and `resume_file` as Form data (multipart).
+3. Open `api/schemas/review.py` and observe `POST /reviews` expects a JSON body defined by `ReviewCreate` (which requires `profile_id: UUID`).
+
+**Expected behavior**: The `docs/API.md` file should include the required form data and JSON body schemas.
+**Actual behavior**: `docs/API.md` is missing the request body definitions, making the API reference incomplete for these endpoints as reported in the issue.
 
 ## Eval iterations
 
@@ -42,28 +47,24 @@ fields.
 
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+- Run 1: agreement: 20/20 scored items (bar: 18/20: PASS)
 
 **Package analysis**
 
-[Pick one scored package (`pkg-01` through `pkg-20` — the four `calib-` packages are never
-scored). Name it by id, say what your rubric decided and what the gold label said, and
-explain why your rubric read it that way.]
+**pkg-20**
+- My rubric decided: `reject`
+- Gold label said: `reject`
+- Why my rubric read it that way: The `ghostty` repo policy explicitly requires disclosure of AI usage. The `pkg-20` candidate claim and repro comments do not contain any AI disclosure statements, so the `ai-disclosure` check failed, resulting in a `reject` verdict.
 
 **Check rationale**
 
-[Quote one check from the `rubric.md` you uploaded to `tools/repro-check/`, exactly as it reads now.
-Then say why it reads that way — what you revised to get there, or what you rejected in
-favour of it.]
+Check: `steps-followable`
+Quote: "A stranger can re-run the steps from a clean start: every command is literal (not pseudocode or "set up the project"), the starting state is named (a clone, a fresh install, a specific file), and no step depends on a private repo, unshared config, or local path another person cannot access."
+Rationale: I worded it this way to explicitly require literal commands and a named starting state, rejecting vague instructions like "set up the project". This is because a stranger reading the report might not know the undocumented project setup steps, making vague instructions un-runnable.
 
 **Trade-offs**
 
-[Every check gives something up. Any one of these is a complete answer: a package whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+For the `steps-followable` check, explicitly requiring literal commands (and rejecting "set up the project") means we might reject a perfectly valid bug report from an expert user who skips standard setup steps (like `npm install`). While an expert maintainer could still reproduce the bug, this strict requirement ensures the reproduction is universally accessible.
 
 ---
 
