@@ -8,9 +8,13 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
+
 **Student:** Brian Brown
+
 **GitHub Username:** bbdevelops
+
 **Issue:** [Raftersecurity/rafter-cli #36](https://github.com/Raftersecurity/rafter-cli/issues/36)
+
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
