@@ -70,10 +70,9 @@ I consolidated the voice guides from my earlier tools into one canonical guide, 
 
 My ship manifest runs the TypeScript build and selected Node/Python regressions, records dated native Windows exclusions, and includes the separate passing full Linux baselines. The gate returned PASS for all three manifest commands and all five pr-precheck checks on my committed documentation branch; both posting hooks also passed before upstream PR #357 opened. Its input limits would hide recent results and the end of the diff, so I added a current evidence overview and the exact diff continuation while preserving the full transcripts and leaving the gate and rubric unchanged. When Claude denied the first creation command despite those passes, I checked the hook logs, corrected the temporary permission rule for that command and retried successfully.
 
-**Unit 8: [one line on the tool work]**
+**Unit 8: Checked the PR monitor draft and kept its wait note private**
 
-[2-4 sentences: the PR-monitor and your playbook. What it read, what it
-drafted, what you did with the draft.]
+On November 10, I ran the PR monitor for #357 with my playbook's seven-day nudge buffer and rules for bot notices. It misclassified Copilot's quota notice as FEEDBACK-IN, but Claude drafted a private wait note, which I kept off GitHub after checking the complete thread and inline comments on November 11. The monitor can also return NOTHING NEW after the nudge threshold passes because elapsed time is absent from its saved fingerprint. I made the playbook treat quota notices as no-reply cases and require manual timestamp checks before a nudge.
 
 ---
 
