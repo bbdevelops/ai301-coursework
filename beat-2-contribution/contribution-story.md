@@ -66,9 +66,9 @@ For the October 21, 2026 scans, I used issue-scout with five GitHub queries tied
 
 I consolidated the voice guides from my earlier tools into one canonical guide, added rules for claims, questions, and pings, and installed a voice guard that checks outgoing posts through Claude Code. The installed scopes still contained classroom rules, and my original stability question was too broad because CLI_SPEC.md already names some stable contracts; I replaced the scopes, clarified my progress-update rule, and revised the question before posting. A fresh-session wiring test stopped the bodyless command as expected, and the guard recorded a pass for my actual claim. I also added a focused CLAUDE.local.md with the relevant output handlers, repository policies, and setup limitations, and excluded it through Git's local exclude file so it stays out of the upstream contribution.
 
-**Unit 7: Passed the branch ship-gate with explicit scope and test evidence**
+**Unit 7: Validated my branch with the ship-gate and an explicit manifest**
 
-I installed the ship-gate and confirmed both hooks stop a bodyless PR-help attempt, then wrote a manifest with the build and selected Node/Python checks plus dated native-Windows exclusions. Separate unchanged full Linux suites passed 2,505 Node tests and 2,047 Python tests, with optional/live-API skips disclosed. The gate's size limits would omit recent evidence and the end of the documentation diff, so I added a current evidence overview and the exact diff continuation while preserving the full historical transcripts and leaving the gate and rubric unchanged. On November 10 the committed initial contribution passed all three manifest checks and all five PR-precheck checks on the first attempt; optional wording observations remain for the separate voice-guard review, and nothing was pushed or opened during this step.
+My ship manifest runs the TypeScript build and selected Node/Python regressions, records dated native Windows exclusions, and includes the separate passing full Linux baselines. The gate returned PASS for all three manifest commands and all five pr-precheck checks on my committed documentation branch; both posting hooks also passed before upstream PR #357 opened. Its input limits would hide recent results and the end of the diff, so I added a current evidence overview and the exact diff continuation while preserving the full transcripts and leaving the gate and rubric unchanged. When Claude denied the first creation command despite those passes, I checked the hook logs, corrected the temporary permission rule for that command and retried successfully.
 
 **Unit 8: [one line on the tool work]**
 
@@ -555,6 +555,11 @@ Verified the published PR is open, authored by bbdevelops, targets Raftersecurit
 Added PR #357 to the story header and Pull Request section, summarized its published scope, evidence and AI disclosure, and set Status to Awaiting review. Filled the Pull Request Toolkit block from the actual ship-gate and voice-guard logs. A fresh GitHub read found the PR open with no maintainer feedback; Copilot's automated review did not complete because its review quota was insufficient. That is not a code finding or a maintainer verdict.
 
 Prepared only beat-2-contribution/contribution-story.md for the course repository's default main branch, including the accumulated Unit 7 planning, implementation and testing notes. The remote main still matches the prepared base, so publication can preserve history with a normal fast-forward push. Raw evidence, plans, credentials, hooks and helper files remain local. Publication verification is recorded separately after the commit; the upstream Rafter PR and its two-document commit are unchanged.
+
+
+**2026-11-10 — Step 14: Unit 7 Toolkit entry completed**
+
+Revised the Unit 7 heading and four-sentence paragraph to summarize the manifest, actual branch PASS, input-size workaround and temporary permission-rule correction. Prepared this focused story update for publication on course main, with GitHub content verification recorded separately; the upstream contribution and review status are unchanged.
 
 
 **Toolkit**
