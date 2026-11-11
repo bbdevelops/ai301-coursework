@@ -84,7 +84,7 @@ The regrade accepted #36 with an ambitious difficulty note. The deliverable is i
 
 **Claim:** [GitHub claim comment](https://github.com/Raftersecurity/rafter-cli/issues/36#issuecomment-6547018178), posted 2026-10-31 as bbdevelops through Claude Code with a voice-guard hook pass.
 
-**Next upstream update:** findings or a blocker by November 3, 2026.
+**Claim's promised update:** findings or a blocker by November 3, 2026. I posted the [progress update](https://github.com/Raftersecurity/rafter-cli/issues/36#issuecomment-6622914775) that evening.
 
 **Toolkit**
 
@@ -107,7 +107,7 @@ The shared docs should provide supported command spellings, actual JSON examples
 
 **Current Behavior**
 
-The pinned-source file lookup returns no JSON_SCHEMAS.md, but CLI_SPEC already documents several JSON shapes. Local reproduction also found that `agent audit --json` is unsupported, fresh config defaults differ across runtimes, and only the Claude policy export is JSON. The refreshed issue still contains only my claim; there is no maintainer response to the stability question yet.
+The pinned-source file lookup returns no JSON_SCHEMAS.md, but CLI_SPEC already documents several JSON shapes. Local reproduction also found that `agent audit --json` is unsupported, fresh config defaults differ across runtimes, and only the Claude policy export is JSON. The initial issue read contained my claim and no maintainer response to the stability question. By the November 11 review, the thread also contained my November 3 progress update, with no maintainer reply.
 
 **Affected Components**
 
@@ -118,7 +118,7 @@ The upstream edits are limited to new `shared-docs/JSON_SCHEMAS.md` and a cross-
 - Tool: Codex-assisted source inspection and read-only Git/GitHub checks against the pinned checkout and complete current issue thread.
 - What it produced: a command-family inventory separating local output writers from backend pass-through responses, plus a repeated missing-file check.
 - Difficulties: the issue's command list is older than the implementation, config shapes differ between runtimes, and API clients do not define complete backend response schemas.
-- What changed: included default JSON and format-selected JSON in the planned coverage, kept unsupported/non-JSON boundaries explicit, and retained backend evidence and unspecified stability as release gates.
+- What changed: included default JSON and format-selected JSON in the planned coverage and kept unsupported/non-JSON boundaries explicit. Backend evidence and unspecified stability were initial release gates; the later scope revision permits the verified initial reference with Sites and unobserved variants explicitly deferred.
 
 ---
 
@@ -248,7 +248,7 @@ for runtime, base in implementations.items():
 
 **Reproduction Evidence**
 
-**Commit showing reproduction:** none. No reproduction or fix commit has been made.
+**Commit showing reproduction:** none at the October 31 reproduction checkpoint; the captures were saved locally. The later documentation fix is [a70de5e](https://github.com/Raftersecurity/rafter-cli/commit/a70de5e612a2c04e341d09e1a53f5268a28342ce), recorded in the November 10 Implementation Notes.
 
 **Source commit:** [upstream 424d827](https://github.com/Raftersecurity/rafter-cli/commit/424d827229860dca52dc7d4494468d74c5a820a2).
 
@@ -314,11 +314,13 @@ The fresh-profile config observations differ: Node uses keys such as `riskLevel`
 - Tool: repro-check in Claude Code, grading the claim and reproduction together in full-package live mode; a scoped setup and diagnostic runner collected the evidence.
 - What it produced: acceptance on all seven required checks, backed by the pinned source, missing-reference output, and 22 offline CLI invocations with nine diagnostic checks passing.
 - Difficulties: Windows path/cache errors interrupted Python setup; stale issue commands and differing fresh-profile config fields needed qualification. The first accepted grade also flagged local bookkeeping and an unclear distinction between command runs and checks.
-- What changed: used existing pip against the absolute local environment with the same lock constraints, documented current command/output variants, removed local bookkeeping from the report, and clarified all nine checks. The final report passed a second actual Claude Code grade. Authenticated backend and live MCP behavior remain source-only coverage.
+- What changed: used existing pip against the absolute local environment with the same lock constraints, documented current command/output variants, removed local bookkeeping from the report, and clarified all nine checks. The final report passed a second actual Claude Code grade. At that checkpoint, authenticated backend and live MCP behavior were still source-only coverage; later actual captures are dated in Testing Strategy and Implementation Notes.
 
 ---
 
 ## Solution Approach
+
+**Plan history:** The analysis and implementation plan below preserve the pre-commit planning checkpoints, including their earlier pending work and uncommitted-draft descriptions. The resulting two-document contribution was committed as a70de5e and opened as PR #357 on November 10. The submitted reference contains 54 capture-backed examples; Sites and unobserved backend variants remain deferred.
 
 **Analysis**
 
@@ -390,6 +392,8 @@ This initial contribution does not claim to finish every requirement in issue #3
 
 ## Testing Strategy
 
+**The two observable checks:** (1) the documentation regression fails when the consolidated reference is absent and passes when the reference exists, its Overview link resolves, and the captured examples and field tables validate; (2) the same runtime source retains its observed command outputs and exit behavior, with the build and existing Node/Python regression groups passing. The dated results below distinguish selected checks, full Linux baselines and native Windows limitations. A runtime suite pass alone does not verify the documentation change.
+
 **2026-11-09 — Assignment Step 8.** This is a documentation fix: the observable before/after is the missing reference becoming a usable, linked reference. I tested the committed 0.11.7 source at `1ebad941815d91d45d7befe3295d15f23a8b05ad`, then the uncommitted working tree on `docs/36-json-schemas`. I used the pinned commit rather than this clone's older local main. A Git tree query returned no JSON_SCHEMAS.md before the fix. The same local `test_json_reference.py` exited 1 with `reference_exists: false` on that committed-docs fixture, then exited 0 on the branch with all seven assertions passing: the reference and Overview link exist, the link resolves, all 48 JSON/JSONL examples parse, the original 16 match their 0.11.7 captures, and all 30 output/field/type/link checks pass. From the clone, `python -X utf8 ../test_json_reference.py` repeats the after check. Step 7's missing-link and broken-link controls remain preserved separately.
 
 I also repeated all 22 original offline CLI invocations: version; clean/finding scans through secrets, agent scan and scan local; unsupported audit --json; config show; and Claude/Codex policy exports, for both runtimes. Both report 0.11.7. All 22 exits matched expectations, including scan findings exiting 1 and unsupported audit JSON exiting 1 in Node or 2 in Python. All 12 scan results agree across aliases/runtimes; Claude export is JSON, Codex export is TOML, and riskLevel/risk_level remain distinct. These real outputs validate the documented behavior; this patch changes no runtime behavior.
@@ -411,7 +415,7 @@ Added six actual backend selections and 35 field rows while preserving the 48 ea
 
 **Toolkit**
 
-- Tool: Codex-assisted offline and actual backend captures, the local documentation checker extended for six backend examples, and the installed gate's repository-check runner; no new model/precheck call.
+- Tool: Codex-assisted offline and actual backend captures, the local documentation checker extended for six backend examples, and the installed gate's repository-check runner. Step 10 later used the full installed ship-gate with an actual Claude PR-precheck call.
 - What it produced: Before/after evidence, the original 22 offline transcripts, one durable Fast submission with identical run/get results across runtimes, quota proof, 54 validated examples, six new negative controls, and fresh successful build/19 Node/82 Python output, and a complete 2,505-pass Linux Node baseline with disclosed skips. Step 10 adds an actual first-attempt ship-gate PASS on the committed branch, with all three manifest commands and all five PR checks passing.
 - Difficulties: The one-scan allowance required durable ID recovery and no POST retry; API-key scope was not shown in the UI. Exit 0 coexists with 73 findings, and published field definitions omit the observed scanned_commit. Historical Windows suite failures remain recorded; the full Linux Node baseline passes after fixing the clone ref and disposable counter-test environment.
 - What changed: Extended local-only provenance/type checks while preserving their earlier versions and evidence; documented real wire fields and explicit excerpts, kept the two-document patch, and left Sites/unobserved outcomes and release gates open.
@@ -561,6 +565,25 @@ Prepared only beat-2-contribution/contribution-story.md for the course repositor
 Revised the Unit 7 heading and four-sentence paragraph to summarize the manifest, actual branch PASS, input-size workaround and temporary permission-rule correction. Prepared this focused story update for publication on course main, with GitHub content verification recorded separately; the upstream contribution and review status are unchanged.
 
 
+**2026-11-10 — Unit 8: playbook and actual monitor run**
+
+Verified the installed monitor from the PR clone with --state, then wrote a 297-word playbook with response, staleness, nudge and walk-away rules. The five sampled outside-contributor PRs had waits of 1.82, 2.71, 0.08, 27.67 and 0.20 days; their median was 1.82 days. I chose seven full quiet days as a buffer, allowed only one unsolicited nudge, and kept silence separate from reasons to withdraw. The bot-notice and manual-timestamp rules address known monitor limitations without modifying the staff program, forms, hooks or rubric.
+
+Ran the installed monitor once using the existing Claude subscription login. It classified Copilot's quota notice as FEEDBACK-IN, but Claude followed the playbook and drafted a private wait note with MOVE: No reply. I immediately archived the actual playbook, report, draft and appended log entry locally. A matching Claude session recorded one assistant response and no tool calls; no public post or branch change occurred.
+
+
+**2026-11-11 — Unit 8: draft reviewed and course entries published**
+
+Read all pages of the PR's discussion, reviews and inline comments before deciding to keep the wait note private. There were no human replies or inline comments, only Copilot's quota notice. The workflow page explicitly said it awaited maintainer approval; its API reported action_required with zero jobs. I left the PR open as Awaiting review, sent no reply, nudge or review request, and made no code change or rebase. The seven-day threshold was unmet, and no changed input warranted another drafting run.
+
+Created unit8/contribution-story from freshly fetched course main in the existing publication checkout. Course commit 5f59c93 published the dated PR record, and cea9178 published the four-sentence Unit 8 Toolkit entry. Both used normal non-force pushes and GitHub byte verification. The PR's original ship-gate Toolkit block, upstream two-file commit and all monitor files were preserved. The course checkout gained only the new branch's vscode-merge-base editor hint; global Git configuration was unchanged.
+
+
+**2026-11-11 — Unit 8: final story review and rubric audit**
+
+Read the complete story against the supplied g8.md rubric, drafted all three reflections and Resources Used, and checked each rubric row against the story and live issue/PR evidence. Clarified old checkpoint statements, made the documentation outcome and runtime regression checks explicit, and preserved the historical results and partial contribution scope. I reviewed and approved the personal reflection wording before publication. No new suite, scan, model call, upstream post or runtime change was needed for this writing checkpoint.
+
+
 **Toolkit**
 
 - Tool: Codex-assisted source tracing, serial real CLI/logger/MCP captures, scoped documentation validation, monitored Windows/WSL execution, a local before/after documentation regression test, and the installed gate's repository-check runner, and one guarded actual backend submission with paired read-only retrieval.
@@ -606,25 +629,24 @@ The AI disclosure explains how I used Codex for source tracing, documentation, v
 
 **Technical Skills Gained**
 
-[What you learned technically, named concretely.]
+I learned to build an output reference from observed behavior and source tracing rather than treating a successful command as proof of a complete contract. Tracing `outputScanResults` in `node/src/commands/agent/scan.ts` and `_output_scan_results` in `python/rafter_cli/commands/agent.py` helped me describe field types, presence conditions and runtime differences across the 54 examples. The backend capture returned 73 findings with exit 0, which established successful retrieval, not a clean security result. I separated observed shapes from stability guarantees and used a documentation-specific before/after check and damaged-copy controls alongside the existing regression suites.
 
 **Challenges Overcome**
 
-[What was hard and how you solved it; point at the real events, the
-Toolkit blocks above are full of them.]
+The Windows baseline made it hard to tell a project failure from an environment problem. Native Python hit `os.geteuid()` during collection and a separate MCP stdio run stalled; unchanged Linux tests later passed, including those cases. I kept the Windows failures, Linux passes and their skips, and monitoring records separate; those records do not prove what caused the earlier computer crash. Opening the PR exposed a different evidence problem: Claude said the hooks had not run, but their saved logs showed both passes before a command permission denial. I checked those logs, corrected only the temporary command rule, and retried with both hooks still enabled.
 
 **What I'd Do Differently Next Time**
 
-[Reflection on your process.]
+I would define the smallest useful documented subset and the evidence needed for each command before committing to broad backend coverage. Sites and field-stability guarantees depended on access and maintainer guidance, while local output and one authorized Fast result were feasible. Next time I would record capture provenance and platform limits at the start, keep a compact current-results summary beside the raw transcripts so review limits do not hide it, and use Linux earlier for Unix-specific checks. I would also check the permission rule against the exact intended command before opening a PR and treat a monitor label as a reason to inspect the thread. This contribution remains an initial reference with Sites and unobserved variants deferred; submitting it or merging it does not establish coverage of those gaps.
 
 ---
 
 ## Resources Used
 
-[What actually helped, not a reading list. List things this story
-already shows you using: the doc you followed to set the environment
-up, the thread that explained the bug, the person who answered you.
-One real entry beats ten plausible ones.]
-
-- [Link to documentation that helped]
-- [Discussion, issue, or post that helped]
+- [Rafter issue #36](https://github.com/Raftersecurity/rafter-cli/issues/36), my [claim](https://github.com/Raftersecurity/rafter-cli/issues/36#issuecomment-6547018178) and [progress update](https://github.com/Raftersecurity/rafter-cli/issues/36#issuecomment-6622914775): used the requested consolidated reference to define the problem, raised the stability question, and reported the verified results and remaining gaps. The thread has supplied no maintainer direction as of November 11.
+- [Rafter CONTRIBUTING.md at the tested source](https://github.com/Raftersecurity/rafter-cli/blob/1ebad941815d91d45d7befe3295d15f23a8b05ad/CONTRIBUTING.md): followed its title, Summary/Test plan/Spec update and checklist requirements, and its AI disclosure and co-author requirements. It gives no specific response-wait threshold.
+- [Rafter CLI_SPEC.md at the tested source](https://github.com/Raftersecurity/rafter-cli/blob/1ebad941815d91d45d7befe3295d15f23a8b05ad/shared-docs/CLI_SPEC.md): checked existing JSON sections, audit events, output channels and exit-code guarantees before describing the missing consolidation or making stability claims.
+- The paired [Node scan writer](https://github.com/Raftersecurity/rafter-cli/blob/1ebad941815d91d45d7befe3295d15f23a8b05ad/node/src/commands/agent/scan.ts) and [Python agent commands](https://github.com/Raftersecurity/rafter-cli/blob/1ebad941815d91d45d7befe3295d15f23a8b05ad/python/rafter_cli/commands/agent.py): traced `outputScanResults` and `_output_scan_results` and compared their real captures rather than assuming matching field names and wrappers across runtimes.
+- Unit 8 PR monitor installation guide, supplied in the course starter as `skill/INSTALL.md`, especially sections 2-5: followed the state/full-run workflow, completed the four playbook sections, archived the overwritten report/draft files, and kept the wait note private. The playbook, monitor outputs and raw evidence remain local as instructed.
+- [Claude Code permission rules and wildcard patterns](https://code.claude.com/docs/en/permissions#wildcard-patterns): used the documented command-rule syntax to correct the temporary PR-creation permission pattern while preserving the posting hooks; rechecked the documentation during the final story audit.
+- Assignment 5 Contribution Repository rubric, supplied as `g8.md`: used its 25 rows to check the exact headings, evidence, seven four-line Toolkit blocks, four weekly entries, reflections, dated log and resources in this story.
