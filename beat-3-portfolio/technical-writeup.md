@@ -15,6 +15,29 @@ Claim date: October 31, 2026
 
 Initially, I reviewed the existing documentation and identified areas where the JSON schema output was not adequately described. I then created a series of test cases to understand the various structures and data types produced by **Rafter-CLI**. Based on these tests, I drafted comprehensive documentation that included detailed explanations of each field, its expected data type, and any relevant constraints or relationships. 
 
+**Saved verification capture:** November 10, 2026; Python CLI 0.11.7; exit 0.
+**Recorded CLI call:** `sys.argv[0]`: `rafter`; arguments from saved `command.json`.
+
+```text
+rafter run --repo bbdevelops/rafter-cli --branch main --mode fast --format json
+```
+
+**Saved stdout excerpt:** selected fields from the first of 73 reported findings; remaining fields/findings omitted; values unchanged.
+
+```json
+{
+  "status": "completed",
+  "vulnerabilities": [
+    {
+      "severity": "error"
+    }
+  ]
+}
+```
+
+**Capture record:** `20261110T061016310570Z-submit-run`, `command.json`, `stdout.txt`.
+**Field counts:** `severity`: 73/73 findings; `level`: 0/73 findings.
+
 After submitting my draft, on November 12, the maintainers requested a revision to clarify certain aspects and improve the overall readability. I promptly addressed their feedback, refining the documentation to ensure accuracy and clarity. 
 
 One key change that was highlighted during the review was the changing of the `level` field to `severity` in the documentation.
@@ -46,8 +69,13 @@ Also the maintainer asked for fixes to the documentation regarding the presence 
 >
 > — *Rome-1*, November 12, 2026
 
+**Source comparison:** `git diff --unified=2 a70de5e f0510dd -- shared-docs/CLI_SPEC.md`
+
 ```diff
- #### Failed scans
+diff --git a/shared-docs/CLI_SPEC.md b/shared-docs/CLI_SPEC.md
+index 90f912f..9acf69d 100644
+--- a/shared-docs/CLI_SPEC.md
++++ b/shared-docs/CLI_SPEC.md
 @@ -558,4 +558,8 @@ When `--json` is passed, output is a JSON object to stdout with a `results` arra
  **Top-level field reference:**
  
@@ -66,7 +94,7 @@ Rome-1 merged commit d5f56f6 into Raftersecurity:main
 ```
 [https://github.com/Raftersecurity/rafter-cli/pull/357](https://github.com/Raftersecurity/rafter-cli/pull/357)
 
-Additionally, the commit is part of an upcoming new release, version 0.12:
+Additionally, the commit is part of a new release, version 0.12.0:
 
 [https://github.com/Raftersecurity/rafter-cli/pull/366](https://github.com/Raftersecurity/rafter-cli/pull/366)
 
@@ -74,7 +102,12 @@ This PR transparently discloses AI assistance: Codex was used for source tracing
 
 ## Limitations and what's next
 
-JSON schemas will have to be monitored over time, and it is likely that the documentation will need to be updated accordingly to reflect any changes or additions to the schema. This process was rather extensive and reproducing all of this independently might be a challenge, which may pose an issue for future updates. Maybe a more automated or systematic approach to tracking schema changes and updating the documentation could help mitigate this challenge.
+JSON schemas will have to be monitored over time, and it is likely that the documentation will need to be updated accordingly to reflect any changes or additions to the schema. This process was rather extensive and reproducing all of this independently might be a challenge, which may pose an issue for future updates.
+
+**Next step:**
+
+- **Offline check to package:** Validating that every embedded JSON and JSONL code block in shared-docs/JSON_SCHEMAS.md parses cleanly and contains the expected top-level keys (such as verifying that one-shot local scan payloads include engine_requested, engine_used, and degraded)
+- **Run documentation:** documented run command so another contributor can repeat it
 
 
 Separate from the documentation, we uncovered a bug that the maintainer acknowledged and suggested it be fixed as a different issue:
